@@ -27,4 +27,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee loginEmployee(String empEmail, String pass) {
 		return this.employeeDao.loginEmployee(empEmail, pass);
 	}
+	
+	@Override
+	public Employee signupEmployee(String empRrn){
+		return this.employeeDao.signupEmployee(empRrn);
+	}
 }

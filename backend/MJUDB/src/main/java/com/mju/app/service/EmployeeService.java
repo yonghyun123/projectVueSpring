@@ -8,4 +8,5 @@ public interface EmployeeService {
 	List<Employee> getAllEmployees();
 	Employee getEmployee(int id);
 	Employee loginEmployee(String empEmail, String pass);
+	Employee signupEmployee(String empRrn);
 }

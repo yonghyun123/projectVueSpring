@@ -26,7 +26,15 @@
         <md-dialog-alert
         :md-active.sync="isSame"
         md-content="비밀번호가 일치하지 않습니다"
+        md-confirm-text="확인" />
+        <md-dialog-alert
+        :md-active.sync="fail"
+        md-content="중복된 주민번호가 있습니다."
         md-confirm-text="확인" />         
+        <md-dialog-alert
+        :md-active.sync="success"
+        md-content="회원가입이 성공했습니다."
+        md-confirm-text="확인" />      
     </div>
     <footer>
       <md-button class="md-raised md-primary" @click="Confirm()">회원가입</md-button>
@@ -39,7 +47,7 @@ import VueFormGenerator from 'vue-form-generator';
 import 'vue-form-generator/dist/vfg.css';
 
 export default {
-  name: 'Signup',
+  name: 'signup',
   data() {
     return {
       title: 'Input Your Information in SignUp Page',
@@ -49,6 +57,8 @@ export default {
       isSame: false,
       isRrn: false,
       lenRrn: false,
+      fail: false,
+      success: false,
       model: {
         name: null,
         password: null,
@@ -83,7 +93,7 @@ export default {
             inputType: 'password',
             label: '비밀번호',
             model: 'password',
-            size: 13,
+            min: 6,
             hint: 'Minimum 6 Characters',
             featured: true,
             required: true,
@@ -133,20 +143,24 @@ export default {
   },
   methods: {
     Confirm() {
-      this.axios.post('http://localhost:8080/app/signup/', {
-        empRrnn: this.model.rrn,
-      })
-      .then((res) => {
-        if (res.data) {
-          console.log('nonono');
+      if (this.model.rrn === null) this.isRrn = true;
+      else if (this.model.rrn.length !== 13) this.lenRrn = true;
+      else if (this.model.password === null) this.isPassword = true;
+      else if (this.model.confirmPassword === null) this.isConfirmPassword = true;
+      else if (this.model.password !== this.model.confirmPassword) this.isSame = true;
+      else if (this.model.email === null) this.isEmail = true;
+      else {
+        this.axios.post('http://localhost:8080/app/signup/', {
+          empRrn: this.model.rrn,
+        })
+      .then((res) => { // DB에 같은 주민번호가 있을시,
+        if (res.data) this.fail = true;
+        else {
+          this.success = true;
+          this.$router.push({ path: '/' });
         }
       });
-      if (this.model.password === null) this.isPassword = true;
-      else if (this.model.rrn === null) this.isRrn = true;
-      else if (this.model.rrn.length !== 13) this.isRrn = true;
-      else if (this.model.confirmPassword === null) this.isConfirmPassword = true;
-      else if (this.model.email === null) this.isEmail = true;
-      else if (this.model.password !== this.model.confirmPassword) this.isSame = true;
+      }
     },
   },
 };

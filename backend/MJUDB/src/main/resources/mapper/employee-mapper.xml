@@ -11,7 +11,7 @@
 		<id property="empId" column="emp_id" />
 		<result property="deptId" column="dept_id" />
 		<result property="empName" column="emp_name" />
-		<result property="employeeRrn" column="employee_rrn" />
+		<result property="empRrn" column="emp_rrn" />
 		<result property="empEdu" column="emp_edu" />
 		<result property="empEmail" column="emp_email" />
 		<result property="pass" column="pass" />
@@ -33,5 +33,9 @@
 
 	<select id="loginEmployee" parameterType="com.mju.app.domain.Employee" resultType="com.mju.app.domain.Employee">
 		SELECT * FROM employee WHERE emp_email = #{empEmail} AND pass = #{pass};
+	</select>
+	
+	<select id="signupEmployee" parameterType="com.mju.app.domain.Employee" resultType="com.mju.app.domain.Employee">
+		SELECT * FROM employee WHERE emp_rrn = #{empRrn};
 	</select>
 </mapper>

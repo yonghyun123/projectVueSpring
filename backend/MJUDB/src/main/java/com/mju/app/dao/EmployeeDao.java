@@ -32,4 +32,11 @@ public class EmployeeDao {
 		
 		return this.sqlSession.selectOne(NAMESPACE + "loginEmployee", employee);
 	}
+	
+	public Employee signupEmployee(String empRrn){
+		Employee employee = new Employee();
+		employee.setEmpRrn(empRrn);
+		
+		return this.sqlSession.selectOne(NAMESPACE + "signupEmployee", employee);
+	}
 }
